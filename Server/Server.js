@@ -7,7 +7,8 @@ require("./config/config");
 const routes = require("./routes/index");
 const app = express();
 const usuario = require("./routes/usuario");
-const Categorias = require("./routes/Categorias");
+const Empresa = require("./routes/Empresa");
+const Puesto = require("./routes/Puesto");
 const {response} = require ("express");
 
 
@@ -16,7 +17,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use("/api",routes);
 app.use(usuario);
-app.use(Categorias);
+app.use(Puesto);
+app.use(Empresa);
 
 mongoose.connect(process.env.URLDB,{})
 .then(() => {

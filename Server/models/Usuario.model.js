@@ -14,7 +14,7 @@ const UsuarioSchema = mongoose.Schema({
         type: String,
         required: [true,"Es necesario ingresar el Segundo Apellido"]
     },
-    strEdad :Number,
+    nmbEdad :Number,
 
     idPuesto:{
         type: mongoose.Types.ObjectId, 
@@ -30,4 +30,6 @@ const UsuarioSchema = mongoose.Schema({
 
 })
 
+//62e9a1157c01c733e4109829 id de Puesto
+//62e9a0dc7c01c733e410982 id de Empresa
 module.exports = mongoose.model("usuario", UsuarioSchema);
