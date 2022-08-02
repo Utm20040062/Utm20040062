@@ -62,8 +62,8 @@ router.get("/usuario", (request, response) => {
 
 router.put('/usuario', (req, res) => {
     let body = req.body;
-    Usuariomodel.findByIdAndUpdate({ _id: "62d58d06a6cbfaa685390187" }, {
-            //ID DE PRUEBA CONECTADO A BD "62d58d06a6cbfaa685390187"
+    Usuariomodel.findByIdAndUpdate({ _id: "62e9a3626d78cc05c037faa1" }, {
+            //ID DE PRUEBA CONECTADO A BD "62e9a3626d78cc05c037faa1"
             $set: req.body
         },{new: true},
         function(error, info) {
