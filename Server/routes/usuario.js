@@ -34,8 +34,22 @@ router.post('/usuariobody', (req, response) => {
     });
 
 });
+//Parametros Especificos
+router.get("/usuario/:id", (req, res) => {
+    const{id} = req.params
+   const body = req.body
+   Usuariomodel.findOne(
+    {id: parseId(req.params.id)},
+    body,
+    (err, docs)=>{
+        res.send({
+            items : docs
+        })
+    }
+   )
+});
 
-
+//Parametros Opcionales
 router.get("/usuario", (request, response) => {
    
    

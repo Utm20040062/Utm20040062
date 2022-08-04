@@ -10,12 +10,19 @@ const usuario = require("./routes/usuario");
 const Empresa = require("./routes/Empresa");
 const Puesto = require("./routes/Puesto");
 const {response} = require ("express");
+const { request } = require("./routes/index");
 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use("/api",routes);
+app.get("/",(request, response)=>{
+    return response.status(200).json({
+        msg:"Estas dentro de la Api Get de Ponce",
+        status : 200
+    })
+});
 app.use(usuario);
 app.use(Puesto);
 app.use(Empresa);
