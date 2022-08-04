@@ -1,38 +1,41 @@
-const nodemailer = require("nodemailer");
-const fs = require ("fs");
-const path =  require("path");
-const hogan = require("hogan.js");
+const nodemailer =require("nodemailer");
+const fs =require('fs');
+const path =require('path');
+const hogan =require('hogan.js');
 
-class Email {
+class Email{
     constructor(){
         this.transport = nodemailer.createTransport({
-            service : "gmail",
-            auth: { 
-                user : "examplenodemailer2022@gmail.com",
-                pass : "nodemailer2022"
+            service: "gmail",
+            auth:{
+                user:"utm20040062@utma.edu.mx",
+                pass:"ffdopvwhosxwydfm"
             }
         });
     }
 
-    sendEmail(email, data){
+    sendEmail(email,data){
 
-        return new  Promise((resolve, reject) => {
-            const template = fs.readFileSync(path.resolve(__dirname, "../assets/templates/template.html"),"utf-8");
-            const compiletemplate = hogan.compile(template);
+        return new Promise((resolve,rejects) =>{
+            const template = fs.readFileSync(path.resolve(__dirname, "../assets/template/index.html"), "utf-8");
+            const compileTemplate =hogan.compile(template);
+
+            console.log(data);
 
             this.transport.sendMail({
-                from: '"utma" <examplenodemailer2022@gmail.com>',
-                to : email,
-                subject : "correo electronico",
-                html : compiletemplate.html
-            }).then((response)=> {
-                resolve(response);
+                from: '"Ponce" <utm20040062@utma.edu.mx>',
+                to: email,
+                subject:"correo electronico personal",
+                html: compileTemplate.render({strNombre: data.strNombre, strPrimerApellido: data.strPrimerApellido, strSegundoApellido: data.strSegundoApellido, nmbEdad: data.nmbEdad}),
+            }).then((response) => {
+                resolve(response)
             })
-            .catch((error) => {
-                reject(error);
-            })
-        } )
+            .catch((error) =>{
+                rejects(error)
+            });
+        });
     }
 }
+
 
 module.exports = new Email();
