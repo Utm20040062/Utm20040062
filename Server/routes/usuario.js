@@ -1,6 +1,10 @@
 const express = require("express");
+const { model, default: mongoose } = require("mongoose");
 const Usuariomodel = require("../models/Usuario.model");
 const router = express.Router();
+const parseId = (id)=>{
+    return mongoose.Types.ObjectId(id)
+}
 
 
 //METODO POST CON BODY PARSER
@@ -61,46 +65,29 @@ router.get("/usuario", (request, response) => {
 
 
 router.put('/usuario', (req, res) => {
-    let body = req.body;
-    Usuariomodel.findByIdAndUpdate({ _id: "62e9a3626d78cc05c037faa1" }, {
-            //ID DE PRUEBA CONECTADO A BD "62e9a3626d78cc05c037faa1"
-            $set: req.body
-        },{new: true},
-        function(error, info) {
-            if (error) {
-                res.json({
-                    resultado: false,
-                    msg: 'No se pudo modificar el registro del usuario',
-                    err
-                });
-            } else {
-                res.json({
-                    resultado: true,
-                    msg: 'Se ha modificado el usuario correctamente',
-                    info: info
-                })
-            }
-        }
-    )
+   const{id} = req.params
+   const body = req.body
+   Usuariomodel.updateOne(
+    {id: parseId(req.params.id)},
+    body,
+    (err, docs)=>{
+        res.send({
+            items : docs
+        })
+    }
+   )
 });
 
 
 router.delete('/usuario', (req, res) => {
-    Usuariomodel.findByIdAndRemove({ _id: "" },{new: true},
-        function(error, info) {
-            if (error) {
-                res.json({
-                    resultado: false,
-                    msg: 'No se pudo eliminar el usuario',
-                    err
-                });
-            } else {
-                res.json({
-                    resultado: true,
-                    msg: 'Se ha eliminado el usuario correctamente'
-                })
-            }
-        }
+    const{id} = req.params
+    Usuariomodel.deleteOne(
+     {id: parseId(req.params.id)},
+     (err, docs)=>{
+         res.send({
+             items : docs
+         })
+     }
     )
 });
 
