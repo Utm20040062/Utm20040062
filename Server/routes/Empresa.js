@@ -7,7 +7,7 @@ const parseId = (id)=>{
 }
 
 //METODO POST CON BODY PARSER
-router.post('/Empresabody', (req, response) => {
+router.post('/', (req, response) => {
 
     //Le decimos a MONGO QUE VAMOS A GUARDAR LOS DATOS.
     const Empresa = new EmpresaModel(req.body);
@@ -35,7 +35,7 @@ router.post('/Empresabody', (req, response) => {
 });
 
 //Parametros Especificos
-router.get("/usuario/:id", (req, res) => {
+router.get("/:id", (req, res) => {
 const{id} = req.params
    const body = req.body
    EmpresaModel.findOne(
@@ -49,7 +49,7 @@ const{id} = req.params
    )
 });
 
-router.get("/Empresa", (request, response) => {
+router.get("/", (request, response) => {
    
    
      const registro =  EmpresaModel.find().exec()
@@ -77,7 +77,7 @@ router.get("/Empresa", (request, response) => {
 });
 
 
-router.put('/Empresa', (req, res) => {
+router.put('/', (req, res) => {
     const{id} = req.params
    const body = req.body
    EmpresaModel.updateOne(
@@ -92,7 +92,7 @@ router.put('/Empresa', (req, res) => {
 });
 
 
-router.delete('/Empresa', (req, res) => {
+router.delete('/', (req, res) => {
     const{id} = req.params
     EmpresaModel.deleteOne(
      {id: parseId(req.params.id)},

@@ -7,7 +7,7 @@ const parseId = (id)=>{
 }
 
 //METODO POST CON BODY PARSER
-router.post('/Puestobody', (req, response) => {
+router.post('/', (req, response) => {
 
     //Le decimos a MONGO QUE VAMOS A GUARDAR LOS DATOS.
     const Puesto= new Puestomodel(req.body);
@@ -34,7 +34,7 @@ router.post('/Puestobody', (req, response) => {
 
 });
 //Parametros Especificos
-router.get("/puesto/:id", (req, res) => {
+router.get("/:id", (req, res) => {
     const{id} = req.params
    const body = req.body
    Puestomodel.findOne(
@@ -48,7 +48,7 @@ router.get("/puesto/:id", (req, res) => {
    )
 });
 
-router.get("/Puesto", (request, response) => {
+router.get("/", (request, response) => {
    
    
      const registro =  Puestomodel.find().exec()
@@ -76,7 +76,7 @@ router.get("/Puesto", (request, response) => {
 });
 
 
-router.put('/Puesto', (req, res) => {
+router.put('/', (req, res) => {
     const{id} = req.params
     const body = req.body
     Puestomodel.updateOne(
@@ -91,7 +91,7 @@ router.put('/Puesto', (req, res) => {
 });
 
 
-router.delete('/Puesto', (req, res) => {
+router.delete('/', (req, res) => {
     const{id} = req.params
     Puestomodel.deleteOne(
      {id: parseId(req.params.id)},

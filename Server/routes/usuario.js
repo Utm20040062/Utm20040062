@@ -41,7 +41,7 @@ router.post("/Email", (req, res) => {
 });
 
 //METODO POST CON BODY PARSER
-router.post('/usuariobody', (req, response) => {
+router.post('/body', (req, response) => {
 
     //Le decimos a MONGO QUE VAMOS A GUARDAR LOS DATOS.
     const usuario = new Usuariomodel(req.body);
@@ -68,7 +68,7 @@ router.post('/usuariobody', (req, response) => {
 
 });
 //Parametros Especificos
-router.get("/usuario/:id", (req, res) => {
+router.get("/:id", (req, res) => {
     const{id} = req.params
    const body = req.body
    Usuariomodel.findOne(
@@ -83,7 +83,7 @@ router.get("/usuario/:id", (req, res) => {
 });
 
 //Parametros Opcionales
-router.get("/usuario", (request, response) => {
+router.get("/", (request, response) => {
    
    
      const registro =  Usuariomodel.find().exec()
@@ -111,7 +111,7 @@ router.get("/usuario", (request, response) => {
 });
 
 
-router.put('/usuario', (req, res) => {
+router.put('/', (req, res) => {
    const{id} = req.params
    const body = req.body
    Usuariomodel.updateOne(
@@ -126,7 +126,7 @@ router.put('/usuario', (req, res) => {
 });
 
 
-router.delete('/usuario', (req, res) => {
+router.delete('/', (req, res) => {
     const{id} = req.params
     Usuariomodel.deleteOne(
      {id: parseId(req.params.id)},
