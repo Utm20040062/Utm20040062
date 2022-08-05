@@ -1,7 +1,10 @@
 const express = require("express");
+const { model, default: mongoose } = require("mongoose");
 const EmpresaModel = require("../models/Empresa.model");
 const router = express.Router();
-
+const parseId = (id)=>{
+    return mongoose.Types.ObjectId(id)
+}
 
 //METODO POST CON BODY PARSER
 router.post('/Empresabody', (req, response) => {
@@ -31,6 +34,20 @@ router.post('/Empresabody', (req, response) => {
 
 });
 
+//Parametros Especificos
+router.get("/usuario/:id", (req, res) => {
+const{id} = req.params
+   const body = req.body
+   EmpresaModel.findOne(
+    {id: parseId(req.params.id)},
+    body,
+    (err, docs)=>{
+        res.send({
+            items : docs
+        })
+    }
+   )
+});
 
 router.get("/Empresa", (request, response) => {
    
@@ -61,47 +78,31 @@ router.get("/Empresa", (request, response) => {
 
 
 router.put('/Empresa', (req, res) => {
-    let body = req.body;
-    EmpresaModel.findByIdAndUpdate({ _id: "62d58d06a6cbfaa685390187" }, {
-            //ID DE PRUEBA CONECTADO A BD "62d58d06a6cbfaa685390187"
-            $set: req.body
-        },{new: true},
-        function(error, info) {
-            if (error) {
-                res.json({
-                    resultado: false,
-                    msg: 'No se pudo modificar el registro del Maestro',
-                    err
-                });
-            } else {
-                res.json({
-                    resultado: true,
-                    msg: 'Se ha modificado el maestro correctamente',
-                    info: info
-                })
-            }
-        }
-    )
+    const{id} = req.params
+   const body = req.body
+   EmpresaModel.updateOne(
+    {id: parseId(req.params.id)},
+    body,
+    (err, docs)=>{
+        res.send({
+            items : docs
+        })
+    }
+   )
 });
 
 
 router.delete('/Empresa', (req, res) => {
-    EmpresaModel.findByIdAndRemove({ _id: "" },{new: true},
-        function(error, info) {
-            if (error) {
-                res.json({
-                    resultado: false,
-                    msg: 'No se pudo eliminar el Maestro',
-                    err
-                });
-            } else {
-                res.json({
-                    resultado: true,
-                    msg: 'Se ha eliminado el Maestro correctamente'
-                })
-            }
-        }
+    const{id} = req.params
+    EmpresaModel.deleteOne(
+     {id: parseId(req.params.id)},
+     (err, docs)=>{
+         res.send({
+             items : docs
+         })
+     }
     )
+     
 });
 
 

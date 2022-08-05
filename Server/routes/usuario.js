@@ -1,22 +1,26 @@
 const express = require("express");
 const { model, default: mongoose } = require("mongoose");
 const Usuariomodel = require("../models/Usuario.model");
+const email = require ("../libraries/email");
 const router = express.Router();
 const parseId = (id)=>{
     return mongoose.Types.ObjectId(id)
 }
 
-router.post("/enviarEmail", (req, res) => {
+router.post("/Email", (req, res) => {
     const strNombre =req.body.strNombre;
      const strCorreo = req.body.strCorreo;
-     const strPrimerApellido = req.body.strPrimerApellido;
+     const strPrimerApellidos = req.body.strPrimerApellidos;
      const strSegundoApellido = req.body.strSegundoApellido;
      const nmbEdad = req.body.nmbEdad;
 
      console.log(req.body);
 
-    email.sendemail(strCorreo, {strNombre, strCorreo, strPrimerApellido, strSegundoApellido, nmbEdad})
+    email.sendEmail(strCorreo, {strNombre, strCorreo, strPrimerApellidos, strSegundoApellido, nmbEdad})
     .then((response) =>{
+        
+
+
         return res.status(200).json({
             msg: "Enviado exitosamente",
             status: 200,

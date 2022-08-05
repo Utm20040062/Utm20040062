@@ -1,7 +1,10 @@
 const express = require("express");
+const { model, default: mongoose } = require("mongoose");
 const Puestomodel = require("../models/Puesto.model");
 const router = express.Router();
-
+const parseId = (id)=>{
+    return mongoose.Types.ObjectId(id)
+}
 
 //METODO POST CON BODY PARSER
 router.post('/Puestobody', (req, response) => {
@@ -30,7 +33,20 @@ router.post('/Puestobody', (req, response) => {
     });
 
 });
-
+//Parametros Especificos
+router.get("/puesto/:id", (req, res) => {
+    const{id} = req.params
+   const body = req.body
+   Puestomodel.findOne(
+    {id: parseId(req.params.id)},
+    body,
+    (err, docs)=>{
+        res.send({
+            items : docs
+        })
+    }
+   )
+});
 
 router.get("/Puesto", (request, response) => {
    
@@ -61,46 +77,29 @@ router.get("/Puesto", (request, response) => {
 
 
 router.put('/Puesto', (req, res) => {
-    let body = req.body;
-    Puestomodel.findByIdAndUpdate({ _id: "62d58d06a6cbfaa685390187" }, {
-            //ID DE PRUEBA CONECTADO A BD "62d58d06a6cbfaa685390187"
-            $set: req.body
-        },{new: true},
-        function(error, info) {
-            if (error) {
-                res.json({
-                    resultado: false,
-                    msg: 'No se pudo modificar el registro del Puesto',
-                    err
-                });
-            } else {
-                res.json({
-                    resultado: true,
-                    msg: 'Se ha modificado el Puesto correctamente',
-                    info: info
-                })
-            }
-        }
+    const{id} = req.params
+    const body = req.body
+    Puestomodel.updateOne(
+     {id: parseId(req.params.id)},
+     body,
+     (err, docs)=>{
+         res.send({
+             items : docs
+         })
+     }
     )
 });
 
 
 router.delete('/Puesto', (req, res) => {
-    Puestomodel.findByIdAndRemove({ _id: "" },{new: true},
-        function(error, info) {
-            if (error) {
-                res.json({
-                    resultado: false,
-                    msg: 'No se pudo eliminar el Maestro',
-                    err
-                });
-            } else {
-                res.json({
-                    resultado: true,
-                    msg: 'Se ha eliminado el Maestro correctamente'
-                })
-            }
-        }
+    const{id} = req.params
+    Puestomodel.deleteOne(
+     {id: parseId(req.params.id)},
+     (err, docs)=>{
+         res.send({
+             items : docs
+         })
+     }
     )
 });
 

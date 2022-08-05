@@ -17,7 +17,7 @@ class Email{
     sendEmail(email,data){
 
         return new Promise((resolve,rejects) =>{
-            const template = fs.readFileSync(path.resolve(__dirname, "../assets/template/index.html"), "utf-8");
+            const template = fs.readFileSync(path.resolve(__dirname, "../assets/templates/index.html"), "utf-8");
             const compileTemplate =hogan.compile(template);
 
             console.log(data);
@@ -26,7 +26,7 @@ class Email{
                 from: '"Ponce" <utm20040062@utma.edu.mx>',
                 to: email,
                 subject:"correo electronico personal",
-                html: compileTemplate.render({strNombre: data.strNombre, strPrimerApellido: data.strPrimerApellido, strSegundoApellido: data.strSegundoApellido, nmbEdad: data.nmbEdad}),
+                html: compileTemplate.render({strNombre: data.strNombre, strPrimerApellidos: data.strPrimerApellidos, strSegundoApellido: data.strSegundoApellido, nmbEdad: data.nmbEdad}),
             }).then((response) => {
                 resolve(response)
             })
