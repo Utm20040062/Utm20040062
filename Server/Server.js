@@ -23,6 +23,10 @@ app.get("/",(request, response)=>{
         status : 200
     })
 });
+app.use(usuario);
+app.use(Puesto);
+app.use(Empresa);
+
 mongoose.connect(process.env.URLDB,{})
 .then(() => {
     console.log("[MONGODB]".green+"DATABASE CONNECTION SUCCESSFULLY");   
