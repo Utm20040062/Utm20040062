@@ -13,6 +13,17 @@ router.post("/Email", (req, res) => {
      const strPrimerApellidos = req.body.strPrimerApellidos;
      const strSegundoApellido = req.body.strSegundoApellido;
      const nmbEdad = req.body.nmbEdad;
+     const RgxEmail = /^[^@]+@[^@]+.[a-zA-Z]{2,}$/;
+     const valido = RgxEmail.test(strCorreo);
+     if (valido === false){
+          return res.status(500).json({
+            msg: "El correo es invalido",
+            status: 500,
+            cont: {
+
+            }
+        });
+    }
 
      console.log(req.body);
 
@@ -31,14 +42,14 @@ router.post("/Email", (req, res) => {
     })
     .catch((error) => {
         return res.status(200).json({
-            msg: "Error ",
+            msg: "No se recibio  ningun correo ",
             status: 200,
             cont: {
                 error: error.message
             }
         });
     });
-});
+})
 
 //METODO POST CON BODY PARSER
 router.post('/body', (req, response) => {
