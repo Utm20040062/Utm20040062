@@ -1,6 +1,7 @@
 const express = require("express");
 const { model, default: mongoose } = require("mongoose");
 const EmpresaModel = require("../models/Empresa.model");
+const PuestoModel = require("../models/Puesto.model");
 const router = express.Router();
 const parseId = (id)=>{
     return mongoose.Types.ObjectId(id)
@@ -36,17 +37,13 @@ router.post('/', (req, response) => {
 
 //Parametros Especificos
 router.get("/:id", (req, res) => {
-const{id} = req.params
-   const body = req.body
-   EmpresaModel.findOne(
-    {id: parseId(req.params.id)},
-    body,
-    (err, docs)=>{
-        res.send({
-            items : docs
-        })
-    }
-   )
+    let id = req.params.id
+    EmpresaModel.findById(id, (err, EmpresaModel)=>{
+       if (err) return res.status(500).send({message:'Error la realizar la peticion: $'})
+       if (!EmpresaModel) return res.status(404).send({message: 'El usuario no existe'})
+   
+       res.status(200).send({Usuariomodel})
+   }) 
 });
 
 router.get("/", (request, response) => {
@@ -76,35 +73,28 @@ router.get("/", (request, response) => {
 
 });
 
-
-router.put('/', (req, res) => {
-    const{id} = req.params
-   const body = req.body
-   EmpresaModel.updateOne(
-    {id: parseId(req.params.id)},
-    body,
-    (err, docs)=>{
-        res.send({
-            items : docs
-        })
-    }
-   )
+        
+//El metodo put funcion correctamente pero no muestra la actualizasion al instante
+//Por lo que debe volver a usar el metodo GET para ver los resultados de la edicion
+router.put('/:id', (req, res) => {
+    let id = req.params.id
+    let update = req.body
+    EmpresaModel.findByIdAndUpdate(id,update,(err, empresaupdated)=>{
+        if (err) res.status(500).send({message:'Error la Actualizar el usuario: $'})
+        res.status(200).send({EmpresaModel: empresaupdated})
+    }) 
 });
 
 
-router.delete('/', (req, res) => {
-    const{id} = req.params
-    EmpresaModel.deleteOne(
-     {id: parseId(req.params.id)},
-     (err, docs)=>{
-         res.send({
-             items : docs
-         })
-     }
-    )
-     
+router.delete('/:id', (req, res) => {
+    let id = req.params.id
+    EmpresaModel.findByIdAndDelete(id, (err, EmpresaModel)=>{
+        if (err) return res.status(500).send({message:'Error la realizar la peticion: $'})
+        if (!EmpresaModel) return res.status(404).send({message: 'La Empresa no existe'})
+    
+        res.status(200).send({message : "Se elimino Correctamente"})
+    }) 
 });
-
 
 
 

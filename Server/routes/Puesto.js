@@ -7,7 +7,7 @@ const parseId = (id)=>{
 }
 
 //METODO POST CON BODY PARSER
-router.post('/', (req, response) => {
+router.post('/body', (req, response) => {
 
     //Le decimos a MONGO QUE VAMOS A GUARDAR LOS DATOS.
     const Puesto= new Puestomodel(req.body);
@@ -17,7 +17,7 @@ router.post('/', (req, response) => {
             msg:"Se ha registrado correctamente",
             status: 200,
             cont: {
-                maestro: PuestoRegistrdo
+                Puesto: PuestoRegistrdo
             }
         });
         
@@ -35,17 +35,13 @@ router.post('/', (req, response) => {
 });
 //Parametros Especificos
 router.get("/:id", (req, res) => {
-    const{id} = req.params
-   const body = req.body
-   Puestomodel.findOne(
-    {id: parseId(req.params.id)},
-    body,
-    (err, docs)=>{
-        res.send({
-            items : docs
-        })
-    }
-   )
+    let id = req.params.id
+    Puestomodel.findById(id, (err, Puestomodel)=>{
+       if (err) return res.status(500).send({message:'Error la realizar la peticion: $'})
+       if (!Puestomodel) return res.status(404).send({message: 'El usuario no existe'})
+   
+       res.status(200).send({Puestomodel})
+   }) 
 });
 
 router.get("/", (request, response) => {
@@ -77,30 +73,23 @@ router.get("/", (request, response) => {
 
 
 router.put('/', (req, res) => {
-    const{id} = req.params
-    const body = req.body
-    Puestomodel.updateOne(
-     {id: parseId(req.params.id)},
-     body,
-     (err, docs)=>{
-         res.send({
-             items : docs
-         })
-     }
-    )
+    let id = req.params.id
+    let update = req.body
+    Puestomodel.findByIdAndUpdate(id,update,(err, puestoupdated)=>{
+        if (err) res.status(500).send({message:'Error la Actualizar el usuario: $'})
+        res.status(200).send({Puestomodel: puestoupdated})
+    }) 
 });
 
 
-router.delete('/', (req, res) => {
-    const{id} = req.params
-    Puestomodel.deleteOne(
-     {id: parseId(req.params.id)},
-     (err, docs)=>{
-         res.send({
-             items : docs
-         })
-     }
-    )
+router.delete('/:id', (req, res) => {
+    let id = req.params.id
+    Puestomodel.findByIdAndDelete(id, (err, Puestomodel)=>{
+        if (err) return res.status(500).send({message:'Error la realizar la peticion: $'})
+        if (!Puestomodel) return res.status(404).send({message: 'El usuario no existe'})
+    
+        res.status(200).send({message : "Se elimino Correctamente"})
+    }) 
 });
 
 

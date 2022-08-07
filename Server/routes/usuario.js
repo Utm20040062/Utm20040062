@@ -69,17 +69,13 @@ router.post('/body', (req, response) => {
 });
 //Parametros Especificos
 router.get("/:id", (req, res) => {
-    const{id} = req.params
-   const body = req.body
-   Usuariomodel.findOne(
-    {id: parseId(req.params.id)},
-    body,
-    (err, docs)=>{
-        res.send({
-            items : docs
-        })
-    }
-   )
+ let id = req.params.id
+ Usuariomodel.findById(id, (err, Usuariomodel)=>{
+    if (err) return res.status(500).send({message:'Error la realizar la peticion: $'})
+    if (!Usuariomodel) return res.status(404).send({message: 'El usuario no existe'})
+
+    res.status(200).send({Usuariomodel})
+}) 
 });
 
 //Parametros Opcionales
@@ -110,32 +106,26 @@ router.get("/", (request, response) => {
 
 });
 
-
-router.put('/', (req, res) => {
-   const{id} = req.params
-   const body = req.body
-   Usuariomodel.updateOne(
-    {id: parseId(req.params.id)},
-    body,
-    (err, docs)=>{
-        res.send({
-            items : docs
-        })
-    }
-   )
+//El metodo put funcion correctamente pero no muestra la actualizasion al instante
+//Por lo que debe volver a usar el metodo GET para ver los resultados de la edicion
+router.put('/:id', (req, res) => {
+    let id = req.params.id
+    let update = req.body
+    Usuariomodel.findByIdAndUpdate(id,update,(err, usuarioupdated)=>{
+        if (err) res.status(500).send({message:'Error la Actualizar el usuario: $'})
+        res.status(200).send({Usuariomodel: usuarioupdated})
+    }) 
 });
 
 
-router.delete('/', (req, res) => {
-    const{id} = req.params
-    Usuariomodel.deleteOne(
-     {id: parseId(req.params.id)},
-     (err, docs)=>{
-         res.send({
-             items : docs
-         })
-     }
-    )
+router.delete('/:id', (req, res) => {
+    let id = req.params.id
+    Usuariomodel.findByIdAndDelete(id, (err, Usuariomodel)=>{
+        if (err) return res.status(500).send({message:'Error la realizar la peticion: $'})
+        if (!Usuariomodel) return res.status(404).send({message: 'El usuario no existe'})
+    
+        res.status(200).send({message : "Se elimino Correctamente"})
+    }) 
 });
 
 
