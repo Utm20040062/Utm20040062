@@ -71,8 +71,9 @@ router.get("/", (request, response) => {
 
 });
 
-
-router.put('/', (req, res) => {
+//El metodo put funcion correctamente pero no muestra la actualizasion al instante
+//Por lo que debe volver a usar el metodo GET para ver los resultados de la edicion
+router.put('/:id', (req, res) => {
     let id = req.params.id
     let update = req.body
     Puestomodel.findByIdAndUpdate(id,update,(err, puestoupdated)=>{
